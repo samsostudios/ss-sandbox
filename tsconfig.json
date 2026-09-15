@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "ESNext",
+    "removeComments": true,
+
+    "strict": true,
+    "verbatimModuleSyntax": true,
+
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "rootDir": ".",
+    "outDir": "dist",
+
+    "paths": {
+      "$utils/*": ["./src/utils/*"],
+      "$components/*": ["./src/components/*"],
+      "$animation/*": ["./src/animation/*"]
+    }
+  }
+}
