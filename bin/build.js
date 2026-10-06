@@ -12,7 +12,7 @@ const ENTRY_POINTS = ['src/index.ts'];
 
 // Config dev serving
 const LIVE_RELOAD = !PRODUCTION;
-const SERVE_PORT = 3000;
+const SERVE_PORT = 3001;
 
 // Create context
 const context = await esbuild.context({
