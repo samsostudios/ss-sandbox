@@ -5357,25 +5357,75 @@
       import_core.default.init({
         transitions: [
           {
-            name: "default",
-            leave: ({ current }) => {
-              return this.runLeaveAnimation(current.container);
+            name: "panel-replace",
+            sync: true,
+            beforeEnter({ next }) {
+              document.body.classList.add("is-transitioning");
+              gsapWithCSS.set(next.container, { yPercent: 100 });
             },
-            afterLeave: ({ current }) => {
-              console.log("after leave");
-              gsapWithCSS.set(current.container, { display: "none" });
+            enter({ current, next }) {
+              const outgoing = current.container;
+              const incoming = next.container;
+              return new Promise((resolve) => {
+                gsapWithCSS.timeline({ onComplete: resolve }).to([outgoing, incoming], {
+                  scale: 0.94,
+                  duration: 0.3,
+                  ease: "power2.inOut"
+                }).to(outgoing, {
+                  yPercent: -100,
+                  duration: 0.8,
+                  opacity: 0.4,
+                  ease: "power3.inOut"
+                }).to(
+                  incoming,
+                  {
+                    yPercent: 0,
+                    duration: 0.8,
+                    ease: "power3.inOut"
+                  },
+                  "<"
+                ).to(
+                  incoming,
+                  {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power2.inOut"
+                  },
+                  "-=0.2"
+                );
+              });
             },
-            beforeEnter: ({ next }) => {
-              console.log("before enter");
-              gsapWithCSS.set(next.container, { autoAlpha: 1 });
-            },
-            enter: ({ next }) => {
-              return this.runEnterAnimation(next.container);
+            after({ next }) {
+              gsapWithCSS.set(next.container, { clearProps: "transform" });
+              document.body.classList.remove("is-transitioning");
             }
           }
         ]
       });
     }
+    // private init() {
+    //   barba.init({
+    //     transitions: [
+    //       {
+    //         name: 'default',
+    //         leave: ({ current }) => {
+    //           return this.runLeaveAnimation(current.container);
+    //         },
+    //         afterLeave: ({ current }) => {
+    //           console.log('after leave');
+    //           gsap.set(current.container, { display: 'none' });
+    //         },
+    //         beforeEnter: ({ next }) => {
+    //           console.log('before enter');
+    //           gsap.set(next.container, { autoAlpha: 1 });
+    //         },
+    //         enter: ({ next }) => {
+    //           return this.runEnterAnimation(next.container);
+    //         },
+    //       },
+    //     ],
+    //   });
+    // }
     runLeaveAnimation(current) {
       console.log("/// runLeaveAnimation ///", current);
       return new Promise((resolve) => {
